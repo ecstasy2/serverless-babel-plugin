@@ -35,6 +35,14 @@ class ServerlessPlugin {
         reject('`babelPresets` in your serverless.yaml must be an Array');
       }
 
+      if (_.isUndefined(this.serverless.service.custom.babelPlugins)) {
+        this.serverless.service.custom.babelPlugins = []
+      }
+
+      if (!Array.isArray(this.serverless.service.custom.babelPlugins)) {
+        reject('`babelPlugins` in your serverless.yaml must be an Array');
+      }
+
       const servicePath = this.serverless.config.servicePath;
 
       let bundleName = this.serverless.service.service;
@@ -73,7 +81,7 @@ class ServerlessPlugin {
           return reject(result.error);
         }
         const stdout = result && result.stdout && result.stdout.toString();
-        const sterr = result && && result.stderr && result.stderr.toString();
+        const sterr = result && result.stderr && result.stderr.toString();
         if (stdout) {
           this.serverless.cli.log(`Babel compilation:\n${stdout}`);
         }
